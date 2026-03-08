@@ -1,71 +1,86 @@
-const results = document.getElementById("results");
+// ===== Select page elements =====
 const artworksBtn = document.getElementById("artworksBtn");
 const artistsBtn = document.getElementById("artistsBtn");
+const results = document.getElementById("results");
+const statusMessage = document.getElementById("statusMessage");
+const sectionTitle = document.getElementById("sectionTitle");
+const sectionDescription = document.getElementById("sectionDescription");
 
-/* ===== ARTWORK ENDPOINT ===== */
+
+// ===== ARTWORKS ENDPOINT =====
 artworksBtn.addEventListener("click", function () {
 
-    results.innerHTML = "Loading artworks...";
+    sectionTitle.textContent = "Artwork Collection";
+    sectionDescription.textContent = "Displaying artwork information from the Art Institute of Chicago API.";
 
-    fetch("https://api.artic.edu/api/v1/artworks?limit=5")
+    statusMessage.textContent = "Loading artworks...";
+    results.innerHTML = "";
+
+    fetch("https://api.artic.edu/api/v1/artworks?limit=6")
         .then(response => response.json())
         .then(data => {
 
-            results.innerHTML = "";
+            statusMessage.textContent = "";
 
             data.data.forEach(artwork => {
 
-                const item = document.createElement("div");
+                const card = document.createElement("div");
+                card.classList.add("card");
 
-                item.innerHTML = `
-                    <h3>${artwork.title}</h3>
-                    <p>Artist: ${artwork.artist_title || "Unknown"}</p>
-                    <p>Date: ${artwork.date_display || "Unknown"}</p>
+                card.innerHTML = `
+                    <h3>${artwork.title || "Untitled"}</h3>
+                    <p><strong>Artist:</strong> ${artwork.artist_title || "Unknown"}</p>
+                    <p><strong>Date:</strong> ${artwork.date_display || "Unknown"}</p>
                     <hr>
                 `;
 
-                results.appendChild(item);
+                results.appendChild(card);
 
             });
 
         })
         .catch(error => {
-            results.innerHTML = "Error loading artworks.";
+            statusMessage.textContent = "Error loading artworks.";
             console.log(error);
         });
 
 });
 
 
-/* ===== ARTIST ENDPOINT ===== */
+// ===== ARTISTS ENDPOINT =====
 artistsBtn.addEventListener("click", function () {
 
-    results.innerHTML = "Loading artists...";
+    sectionTitle.textContent = "Artist Directory";
+    sectionDescription.textContent = "Displaying artist information from the Art Institute of Chicago API.";
 
-    fetch("https://api.artic.edu/api/v1/artists?limit=5")
+    statusMessage.textContent = "Loading artists...";
+    results.innerHTML = "";
+
+    fetch("https://api.artic.edu/api/v1/artists?limit=6")
         .then(response => response.json())
         .then(data => {
 
-            results.innerHTML = "";
+            statusMessage.textContent = "";
 
             data.data.forEach(artist => {
 
-                const item = document.createElement("div");
+                const card = document.createElement("div");
+                card.classList.add("card");
 
-                item.innerHTML = `
-                    <h3>${artist.title}</h3>
-                    <p>Birth: ${artist.birth_date || "Unknown"}</p>
-                    <p>Death: ${artist.death_date || "Unknown"}</p>
+                card.innerHTML = `
+                    <h3>${artist.title || "Unknown Artist"}</h3>
+                    <p><strong>Born:</strong> ${artist.birth_date || "Unknown"}</p>
+                    <p><strong>Died:</strong> ${artist.death_date || "Unknown"}</p>
                     <hr>
                 `;
 
-                results.appendChild(item);
+                results.appendChild(card);
 
             });
 
         })
         .catch(error => {
-            results.innerHTML = "Error loading artists.";
+            statusMessage.textContent = "Error loading artists.";
             console.log(error);
         });
 
