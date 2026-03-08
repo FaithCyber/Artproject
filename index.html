@@ -8,5 +8,67 @@
     <h1>Art Institute Data</h1>
 
     <script src="index.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Art Institute Explorer</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>Art Institute Explorer</h1>
+    <p class="tagline">
+      Explore artworks and artists from the Art Institute of Chicago
+    </p>
+  </header>
+
+  <nav class="main-nav" aria-label="API navigation">
+    <button id="artworksBtn" class="nav-btn">View Artworks</button>
+    <button id="artistsBtn" class="nav-btn">View Artists</button>
+  </nav>
+
+  <main>
+    <section class="intro-card">
+      <h2 id="sectionTitle">Welcome</h2>
+      <p id="sectionDescription">
+        Click one of the navigation buttons above to load data from the API.
+      </p>
+    </section>
+
+    <section id="statusMessage" class="status-message" aria-live="polite"></section>
+
+    <section id="results" class="results-grid" aria-live="polite"></section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Faith Gambrill | Open API Project</p>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
