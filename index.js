@@ -1,4 +1,3 @@
-// ===== Select page elements =====
 const artworksBtn = document.getElementById("artworksBtn");
 const artistsBtn = document.getElementById("artistsBtn");
 const results = document.getElementById("results");
@@ -6,82 +5,84 @@ const statusMessage = document.getElementById("statusMessage");
 const sectionTitle = document.getElementById("sectionTitle");
 const sectionDescription = document.getElementById("sectionDescription");
 
+const artworksUrl =
+  "https://api.artic.edu/api/v1/artworks?limit=6&fields=title,artist_title,date_display";
 
-// ===== ARTWORKS ENDPOINT =====
+const artistsUrl =
+  "https://api.artic.edu/api/v1/artists?limit=6&fields=title,birth_date,death_date";
+
 artworksBtn.addEventListener("click", function () {
+  sectionTitle.textContent = "Artwork Collection";
+  sectionDescription.textContent =
+    "Displaying artwork information from the Art Institute of Chicago API.";
 
-    sectionTitle.textContent = "Artwork Collection";
-    sectionDescription.textContent = "Displaying artwork information from the Art Institute of Chicago API.";
+  statusMessage.textContent = "Loading artworks...";
+  results.innerHTML = "";
 
-    statusMessage.textContent = "Loading artworks...";
-    results.innerHTML = "";
+  fetch(artworksUrl)
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then(function (data) {
+      statusMessage.textContent = "";
+      results.innerHTML = "";
 
-    fetch("https://api.artic.edu/api/v1/artworks?limit=6")
-        .then(response => response.json())
-        .then(data => {
+      data.data.forEach(function (artwork) {
+        const card = document.createElement("div");
+        card.classList.add("card");
 
-            statusMessage.textContent = "";
+        card.innerHTML = `
+          <h3>${artwork.title || "Untitled"}</h3>
+          <p><strong>Artist:</strong> ${artwork.artist_title || "Unknown"}</p>
+          <p><strong>Date:</strong> ${artwork.date_display || "Unknown"}</p>
+        `;
 
-            data.data.forEach(artwork => {
-
-                const card = document.createElement("div");
-                card.classList.add("card");
-
-                card.innerHTML = `
-                    <h3>${artwork.title || "Untitled"}</h3>
-                    <p><strong>Artist:</strong> ${artwork.artist_title || "Unknown"}</p>
-                    <p><strong>Date:</strong> ${artwork.date_display || "Unknown"}</p>
-                    <hr>
-                `;
-
-                results.appendChild(card);
-
-            });
-
-        })
-        .catch(error => {
-            statusMessage.textContent = "Error loading artworks.";
-            console.log(error);
-        });
-
+        results.appendChild(card);
+      });
+    })
+    .catch(function (error) {
+      statusMessage.textContent = "Error loading artworks.";
+      console.error("Artwork fetch error:", error);
+    });
 });
 
-
-// ===== ARTISTS ENDPOINT =====
 artistsBtn.addEventListener("click", function () {
+  sectionTitle.textContent = "Artist Directory";
+  sectionDescription.textContent =
+    "Displaying artist information from the Art Institute of Chicago API.";
 
-    sectionTitle.textContent = "Artist Directory";
-    sectionDescription.textContent = "Displaying artist information from the Art Institute of Chicago API.";
+  statusMessage.textContent = "Loading artists...";
+  results.innerHTML = "";
 
-    statusMessage.textContent = "Loading artists...";
-    results.innerHTML = "";
+  fetch(artistsUrl)
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then(function (data) {
+      statusMessage.textContent = "";
+      results.innerHTML = "";
 
-    fetch("https://api.artic.edu/api/v1/artists?limit=6")
-        .then(response => response.json())
-        .then(data => {
+      data.data.forEach(function (artist) {
+        const card = document.createElement("div");
+        card.classList.add("card");
 
-            statusMessage.textContent = "";
+        card.innerHTML = `
+          <h3>${artist.title || "Unknown Artist"}</h3>
+          <p><strong>Born:</strong> ${artist.birth_date || "Unknown"}</p>
+          <p><strong>Died:</strong> ${artist.death_date || "Unknown"}</p>
+        `;
 
-            data.data.forEach(artist => {
-
-                const card = document.createElement("div");
-                card.classList.add("card");
-
-                card.innerHTML = `
-                    <h3>${artist.title || "Unknown Artist"}</h3>
-                    <p><strong>Born:</strong> ${artist.birth_date || "Unknown"}</p>
-                    <p><strong>Died:</strong> ${artist.death_date || "Unknown"}</p>
-                    <hr>
-                `;
-
-                results.appendChild(card);
-
-            });
-
-        })
-        .catch(error => {
-            statusMessage.textContent = "Error loading artists.";
-            console.log(error);
-        });
-
+        results.appendChild(card);
+      });
+    })
+    .catch(function (error) {
+      statusMessage.textContent = "Error loading artists.";
+      console.error("Artist fetch error:", error);
+    });
 });
